@@ -45,6 +45,9 @@ RUN bash ./packages.sh \
   && chown -R $IMAGE_USER:$IMAGE_USER $COMPOSER_HOME \
   && curl -fsSL https://goss.rocks/install | GOSS_VER=v${GOSS_VERSION} sh \
   && bash ./cleanup.sh
+  && apt-get update
+  && apt-get install -y software-properties-common
+  && apt-get -qq install sshpass -y
 
 USER $IMAGE_USER
 
