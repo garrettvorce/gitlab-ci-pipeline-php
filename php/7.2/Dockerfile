@@ -29,23 +29,24 @@ WORKDIR /tmp
 COPY --from=composer:1 /usr/bin/composer /usr/bin/composer
 
 # Install
-RUN apt-get install software-properties-common \ 
-  && apt-get update \
-  && add-apt-repository ppa:ondrej/php \
-  && apt-get -y install unzip zip nginx php7.2 php7.2-mysql php7.2-fpm php7.2-mbstring php7.2-xml php7.2-curl \
-  adduser --disabled-password --gecos "" $IMAGE_USER && \
-  echo "PATH=$(yarn global bin):$PATH" >> /root/.profile && \
-  echo "PATH=$(yarn global bin):$PATH" >> /root/.bashrc && \
-  echo "$IMAGE_USER  ALL = ( ALL ) NOPASSWD: ALL" >> /etc/sudoers && \
-  mkdir -p /var/www/html && \
-  chown -R $IMAGE_USER:$IMAGE_USER /var/www $HOME \
-  && composer global require "hirak/prestissimo:^0.3"  \
-  && rm -rf ~/.composer/cache/* \
-  && chown -R $IMAGE_USER:$IMAGE_USER $COMPOSER_HOME \
-  && curl -fsSL https://goss.rocks/install | GOSS_VER=v${GOSS_VERSION} sh \
-  && apt-get update \
-  && apt-get install -y software-properties-common \
-  && apt-get -qq install sshpass -y
+RUN apt-get install -y software-properties-common \
+ && apt-add-repository ppa:ondrej/php
+RUN apt-get update
+RUN add-apt-repository ppa:ondrej/php
+RUN apt-get -y install unzip zip nginx php7.2 php7.2-mysql php7.2-fpm php7.2-mbstring php7.2-xml php7.2-curl
+RUN adduser --disabled-password --gecos "" $IMAGE_USER
+RUN echo "PATH=$(yarn global bin):$PATH" >> /root/.profile 
+RUN echo "PATH=$(yarn global bin):$PATH" >> /root/.bashrc
+RUN echo "$IMAGE_USER  ALL = ( ALL ) NOPASSWD: ALL" >> /etc/sudoers
+RUN mkdir -p /var/www/html
+RUN chown -R $IMAGE_USER:$IMAGE_USER /var/www $HOME
+RUN composer global require "hirak/prestissimo:^0.3"
+RUN rm -rf ~/.composer/cache/*
+RUN chown -R $IMAGE_USER:$IMAGE_USER $COMPOSER_HOME
+RUN curl -fsSL https://goss.rocks/install | GOSS_VER=v${GOSS_VERSION} sh
+RUN apt-get update
+RUN apt-get install -y software-properties-common
+RUN apt-get -qq install sshpass -y
 
 USER $IMAGE_USER
 
