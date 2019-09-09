@@ -29,10 +29,7 @@ WORKDIR /tmp
 COPY --from=composer:1 /usr/bin/composer /usr/bin/composer
 
 # Install
-RUN bash ./packages.sh \
-  && bash ./extensions.sh \
-  && bash ./node.sh \
-  && adduser --disabled-password --gecos "" $IMAGE_USER && \
+RUN adduser --disabled-password --gecos "" $IMAGE_USER && \
   echo "PATH=$(yarn global bin):$PATH" >> /root/.profile && \
   echo "PATH=$(yarn global bin):$PATH" >> /root/.bashrc && \
   echo "$IMAGE_USER  ALL = ( ALL ) NOPASSWD: ALL" >> /etc/sudoers && \
