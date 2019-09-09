@@ -29,10 +29,9 @@ WORKDIR /tmp
 COPY --from=composer:1 /usr/bin/composer /usr/bin/composer
 
 # Install
-RUN add-apt-repository ppa:ondrej/php \
-  apt-get install software-properties-common \
-  apt-get install python-software-properties \
+RUN apt-get install software-properties-common \ 
   apt-get update \
+  add-apt-repository ppa:ondrej/php \
   apt-get -y install unzip zip nginx php7.2 php7.2-mysql php7.2-fpm php7.2-mbstring php7.2-xml php7.2-curl \
   adduser --disabled-password --gecos "" $IMAGE_USER && \
   echo "PATH=$(yarn global bin):$PATH" >> /root/.profile && \
